@@ -14,6 +14,8 @@ struct FleaMarket: View {
                 background
                 fruitsFlea
                     .padding(.top, 500)
+                fruitsPlate
+                    .padding(.top, 675)
                 fleaFirst
                     .padding(.top, 300)
             }
@@ -57,6 +59,19 @@ struct FleaMarket: View {
                 .frame(width: UIScreen.main.bounds.width/1.1, height: UIScreen.main.bounds.height/1.1)
         }
     }
+    var fruitsPlate: some View {
+        HStack(spacing: 50) {
+            HStack(spacing: 60){
+                fruitsPlate(imgName: "pequiPlate")
+                fruitsPlate(imgName: "mangabaPlate")
+                    .padding(.top, 8)
+            }
+            fruitsPlate(imgName: "cupuacuPlate")
+                .padding(.top, 8)
+            fruitsPlate(imgName: "guaranaPlate")
+                .padding(.top, 8)
+        }
+    }
     var fruitsFlea: some View {
         HStack(spacing: 40){
             buttonPequi
@@ -98,23 +113,19 @@ struct FleaMarket: View {
         buttonfruits($showing: $showingGuaranaDetails, imgName: "guarana2")
     }
     var pequiView: some View {
-        popupView(nameImg: "pequi2", text1: "O pequi é um fruto típica do cerrado brasileiro", text2: "Tem o tamanho de uma maça, possui casca verde, polpa amarelo claro e um endocarpo espinhoso que protege as sementes. Possui o sabor adocicado")
+        popupView(name: "Pequi", nameImg: "pequi2", text1: "The pequi is a typical fruit of the Brazilian cerrado", text2: "It is the size of an apple, has a green skin, light yellow flesh and a thorny endocarp that protects the seeds. It has a sweet taste.")
     }
     var guaranaView: some View {
-        popupView(nameImg: "guarana2", text1: "O guaraná é uma fruta típica da Amazônia, região norte do Brasil", text2: "É pequena, com casca vermelha, polpa branca e parece um olho. Tem o sabor adstringente e amargo")
+        popupView(name: "Guaraná", nameImg: "guarana2", text1: "Guarana is a typical fruit from the Amazon Forest, northern region of Brazil.", text2: "It is small, with a red skin, white flesh and looks like an eye. It has astringent and bitter taste.")
     }
     var cupuacuView: some View {
-        popupView(nameImg: "cupuacu2", text1: "O cupuaçu é uma fruta típica da Amazônia, região norte do Brasil.", text2: "Possui tamanho médio de 25 cm e peso de 1 kg, com casca dura e lisa de coloração castanho-escura que reveste uma polpa branca e ácida. Tem o sabor azedo e agridoce")
+        popupView(name: "Cupuaçu", nameImg: "cupuacu2", text1: "Cupuaçu is a typical fruit from the Amazon Forest, in the northern region of Brazil.", text2: "It has an average size of 25 cm and a weight of 1 kg, with a hard, smooth, dark brown skin that covers a white and acid pulp. It has a sour and bittersweet taste.")
     }
     var mangabaView: some View {
-        popupView(nameImg: "mangabaa2", text1: "A mangaba é uma fruta típica da região nordeste brasileira", text2: "É pequena e redonda, possuindo ate 6 cm, com casca amarela e polpa branca. Possui o sabor doce.")
+        popupView(name: "Mangaba", nameImg: "mangaba2", text1: "Mangaba is a typical fruit from the northeast region of Brazil.", text2: "It is small and round, measuring up to 6 cm, with yellow skin and white pulp. It has a sweet taste.")
     }
     func toolbarView(name: String, @Binding showing: Bool) -> some ToolbarContent {
         Group {
-            ToolbarItemGroup(placement: .principal) {
-                Text(name)
-                    .font(.title)
-            }
             ToolbarItemGroup(placement: .navigationBarLeading) {
                 Button {
                     withAnimation {
@@ -126,26 +137,32 @@ struct FleaMarket: View {
             }
         }
     }
-    func popupView(nameImg: String, text1: String, text2: String) -> some View {
+    func popupView(name: String,nameImg: String, text1: String, text2: String) -> some View {
         ZStack {
             Rectangle()
                 .cornerRadius(20)
-                .foregroundColor(.cyan)
-            VStack(spacing: 20){
+                .foregroundColor(Colors.background)
+            VStack(alignment: .center, spacing: 20){
+                Text(name)
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
                 Image(nameImg)
                     .resizable()
                     .scaledToFill()
                     .frame(width: 200, height: 200)
-                Text("Origem")
+                Text("Origin")
+                    .font(.largeTitle)
+                Text(text1)
+                    .font(.title)
+                    .padding(.leading, 20)
+                    .padding(.trailing, 20)
+
+                Text("Characteristics:")
                     .font(.largeTitle)
                 Text(text2)
                     .font(.title)
-                Text("Características:")
-                    .font(.largeTitle)
-                Text(text2)
-                    .font(.title)
-                    .padding(.leading,10)
-                    .padding(.trailing, 10)
+                    .padding(.leading, 20)
+                    .padding(.trailing, 20)
             }
         }
         .padding()
@@ -161,6 +178,12 @@ struct FleaMarket: View {
                 .scaledToFill()
                 .frame(width: size, height: size)
         }
+    }
+    func fruitsPlate(imgName: String, size: CGFloat = 130) -> some View {
+        Image(imgName)
+            .resizable()
+            .scaledToFill()
+            .frame(width: size, height: size)
     }
 }
 

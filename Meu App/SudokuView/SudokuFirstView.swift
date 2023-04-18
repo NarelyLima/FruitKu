@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 struct SudokuFirstView: View {
 
@@ -25,10 +26,12 @@ struct SudokuFirstView: View {
     @State var animateWrongText: Bool = false
     // Progress
     @State var droppedCount: CGFloat = 0
+    @State var idle: Bool = false
 
     @EnvironmentObject var fleaModel: FleaMarketModel
 
     @Environment(\.dismiss) var dismiss
+    @State private var player: AVAudioPlayer?
 
     var body: some View {
         NavigationView {
@@ -37,6 +40,7 @@ struct SudokuFirstView: View {
                     ZStack {
                         gridSudoku
                         DropArea()
+
                     }
                     .padding(.vertical, 30)
                     DragArea()
@@ -75,6 +79,12 @@ struct SudokuFirstView: View {
                     }
                 }
         })
+        .onAppear {
+            withAnimation(Animation.linear(duration: 1.5).speed(4).repeatCount(4)) {
+                idle = true
+            }
+        }
+
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 tutorialButton
@@ -107,10 +117,18 @@ struct SudokuFirstView: View {
             TabView(selection: $index) {
                 ForEach((3..<onBoarding.count-1), id: \.self) { index in
                     VStack {
-                        Image(onBoarding[index].image)
-                            .resizable()
-                            .frame(width: 250, height: 250)
-                            .padding(.bottom, 30)
+                        if onBoarding[index].imageGif != "" {
+                            GifImage(onBoarding[index].imageGif)
+                                .frame(width: 500, height: 500, alignment: .center)
+                                .cornerRadius(50)
+                                .padding(.bottom, 20)
+                        }
+                        if onBoarding[index].image != "" {
+                            Image(onBoarding[index].image)
+                                .resizable()
+                                .frame(width: 250, height: 250)
+                                .padding(.bottom, 30)
+                        }
                         Text(onBoarding[index].title)
                             .font(.title)
                             .bold()
@@ -121,7 +139,7 @@ struct SudokuFirstView: View {
                             .padding(.top, 16)
                             .padding(.horizontal, 30)
                             .padding(.bottom, 30)
-                        Text(index < onBoardingModel.count - 2 ? "Arraste pro lado ->" : "")
+                        Text(index < onBoardingModel.count - 2 ? "Drag to the side ->" : "")
                     }
                     .tag(index)
                 }
@@ -155,7 +173,6 @@ struct SudokuFirstView: View {
                             .scaledToFill()
                             .frame(width: 160, height: 160, alignment: .center)
                             .opacity(item.isShowing ? 1 : 0)
-
                             .background {
                                 RoundedRectangle(cornerRadius: 6, style: .continuous)
                                     .fill(item.isShowing ? Colors.background: .gray.opacity(0.25))
@@ -175,6 +192,7 @@ struct SudokuFirstView: View {
                                             item.isShowing = true
                                             updateShuffledArray(fruits: item)
                                             self.progress = progress
+                                            playAudioView(nameAudio: "drop")
                                         }
                                         if progress == 1 {
                                             fleaModel.completed = true
@@ -187,12 +205,13 @@ struct SudokuFirstView: View {
                                 }
                                 return false
                             }
+
                     }
                 }
             }
         }
+
     }
-    @ViewBuilder
     func DragArea() -> some View {
         VStack(spacing: 12) {
             ForEach(shuffledRowsDrag, id:  \.self) { row in
@@ -206,16 +225,21 @@ struct SudokuFirstView: View {
                                 RoundedRectangle(cornerRadius: 6, style: .continuous)
                                     .stroke(.gray)
                             }
+                            .scaleEffect(idle ? 0.9 : 2.1)
                         // MARK: Adding Dra Operation
                             .draggable(item.value)
                             .opacity(item.isShowing ? 0 : 1)
                             .background {
                                 RoundedRectangle(cornerRadius: 6, style: .continuous)
-                                    .fill(item.isShowing ? .gray.opacity(0.25) : .clear )
+                                    .fill(item.isShowing ? .clear : .clear )
                             }
                     }
                 }
             }
+            .onAppear {
+                playAudioView(nameAudio: "drag")
+            }
+
         }
     }
     var navBar: some View {
@@ -230,7 +254,7 @@ struct SudokuFirstView: View {
                 }
             }
             .frame(height: 20)
-            Text("Resolva o Sudoku")
+            Text("Solve Sudoku")
                 .font(.title2.bold())
         }
     }
@@ -314,4 +338,13 @@ struct SudokuFirstView: View {
         }
     }
 
+    func playAudioView(nameAudio: String) {
+        let soundURL = NSURL(fileURLWithPath: Bundle.main.path(forResource: nameAudio, ofType: "mp3")!)
+        do {
+            player = try AVAudioPlayer(contentsOf: soundURL as URL)
+            player?.play()
+        } catch {
+            print("there was some error. The error was \(error)")
+        }
+    }
 }

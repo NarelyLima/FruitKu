@@ -6,11 +6,12 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 @available(iOS 13, macCatalyst 13, tvOS 13, watchOS 6, *)
 extension View {
     func popupNavigationView<Content: View>(horizontalPadding: CGFloat = 100,
-                                            verticalPadding: CGFloat = 50,
+                                            verticalPadding: CGFloat = 0,
                                             show: Binding<Bool>,
                                             @ViewBuilder content: @escaping() -> Content) -> some View {
         return self
@@ -39,3 +40,4 @@ extension View {
             }
     }
 }
+

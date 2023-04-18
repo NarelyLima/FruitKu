@@ -9,18 +9,17 @@ import SwiftUI
 
 struct OnBoardingModel: Hashable, Equatable {
     var image: String
+    var imageGif: String
     var title: String
     var description: String
 }
 
 var onBoardingModel: [OnBoardingModel] = [
-    OnBoardingModel(image: "Sudoku", title: "VOCÊ SABIA?", description: "O sudoku desenvolve algumas habilidades como concentração, memória e lógica. Desse modo, além de um passatempo, ele é usado para melhorar sua qualidade de vida!"),
-    OnBoardingModel(image: "Sudoku", title: "", description: "Aqui, você terá contato com uma adaptação do sudoku, pois os números serão trocados por frutas típicas do Brasil."),
-    OnBoardingModel(image: "Sudoku", title: "", description: "A cada sudoku finalizado, uma parte da tenda será disponibilizada para você clicar e saber um pouco mais sobre as frutas daquele nível"),
-    OnBoardingModel(image: "Sudoku", title: "O Sudoku possui 3 regras:", description: "1. A representação dos elementos não pode se repetir em nenhuma coluna."),
-    OnBoardingModel(image: "Sudoku", title: "O Sudoku possui 3 regras:", description: "2. A representação dos elementos não pode se repetir em nenhuma linha."),
-    OnBoardingModel(image: "Sudoku", title: "O Sudoku possui 3 regras:", description: "3. A representação dos elementos não pode se repetir em nenhuma grade 2x2"),
-    OnBoardingModel(image: "Sudoku", title: "Para mover as frutas:", description: "Pressione e arraste o elemento para o espaço vazio que ela poderia ficar"),
-    OnBoardingModel(image: "Sudoku", title: "", description: "Caso você ainda tenha dúvidas sobre as regras, é só apertar no ? que você terá acesso ao tutorial!"),
-
+    OnBoardingModel(image: "Sudoku", imageGif: "", title: "DID YOU KNOW?", description: "Sudoku develops some skills like concentration, memory and logic. In this way, in addition to being a hobby, it is used to improve your quality of life!"),
+    OnBoardingModel(image: "Sudoku", imageGif: "", title: "", description: "Here, you will have contact with an adaptation of sudoku, as the numbers will be exchanged for fruits typical of Brazil."),
+    OnBoardingModel(image: "Sudoku", imageGif: "", title: "", description: "With each completed sudoku, a part of the tent will be made available for you to click on and learn a little more about the fruits of that level."),
+    OnBoardingModel(image: "", imageGif: "colunaGif", title: "Sudoku has 3 rules:", description: "1. The representation of elements cannot be repeated in any column."),
+    OnBoardingModel(image: "", imageGif: "linhaGif", title: "Sudoku has 3 rules:", description: "2. The representation of elements cannot be repeated in any line."),
+    OnBoardingModel(image: "", imageGif: "quadradoGif", title: "Sudoku has 3 rules:", description: "3. The representation of elements cannot be repeated in any 2x2 grid."),
+    OnBoardingModel(image: "", imageGif: "tutorialGif", title: "", description: "If you still have questions about the rules, just press ? that you will have access to the tutorial!")
 ]

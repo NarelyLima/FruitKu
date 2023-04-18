@@ -15,64 +15,96 @@ struct OnboardingView: View {
 
     var body: some View {
         NavigationView {
-            VStack {
-                TabView(selection: $index) {
-                    ForEach((0..<onBoarding.count), id: \.self) { index in
-                        VStack {
-                            Image(onBoarding[index].image)
-                                .resizable()
-                                .frame(width: 250, height: 250)
-                                .padding(.bottom, 30)
-                            Text(onBoarding[index].title)
-                                .font(.title)
-                                .bold()
-                            Text(onBoarding[index].description)
-                                .multilineTextAlignment(.center)
-                                .font(.title)
-                                .bold()
-                                .padding(.top, 16)
-                                .padding(.horizontal, 30)
-                        }
-                        .tag(index)
-                    }
+            ZStack{
+                Colors.background
+                VStack {
+                    TabView(selection: $index) {
+                        ForEach((0..<onBoarding.count), id: \.self) { index in
+                            VStack {
 
-                }
-                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-                HStack {
-                    ForEach(0..<onBoarding.count, id: \.self) { model in
-                       if model == index {
-                           Circle()
-                               .frame(width: 20, height: 20)
-                               .foregroundColor(Color.black)
-                       } else {
-                           Circle()
-                               .frame(width: 20, height: 20)
-                               .foregroundColor(Color.gray)
+                                if onBoarding[index].imageGif != "" {
+                                    GifImage(onBoarding[index].imageGif)
+                                        .frame(width: 500, height: 500, alignment: .center)
+                                        .cornerRadius(50)
+                                        .padding(.bottom, 20)
+                                }
+                                if onBoarding[index].image != "" {
+                                    Image(onBoarding[index].image)
+                                        .resizable()
+                                        .frame(width: 250, height: 250)
+                                        .padding(.bottom, 30)
+                                }
+                                Text(onBoarding[index].title)
+                                    .font(.title)
+                                    .bold()
+                                Text(onBoarding[index].description)
+                                    .multilineTextAlignment(.center)
+                                    .font(.title)
+                                    .bold()
+                                    .padding(.top, 16)
+                                    .padding(.horizontal, 30)
+                            }
+                            .tag(index)
+                        }
+                    }
+                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                    HStack {
+                        ForEach(0..<onBoarding.count, id: \.self) { model in
+                           if model == index {
+                               Circle()
+                                   .frame(width: 20, height: 20)
+                                   .foregroundColor(Color.black)
+                           } else {
+                               Circle()
+                                   .frame(width: 20, height: 20)
+                                   .foregroundColor(.white)
+                           }
                        }
                    }
-               }
-               .padding(.bottom, 30)
-                Button {
-                    if self.index < onBoardingModel.count - 1 {
-                        self.index += 1
-                        if self.index == onBoardingModel.count - 1 {
-                            isFinal = true
+                   .padding(.bottom, 30)
+                    Button {
+                        if self.index < onBoardingModel.count - 1 {
+                            self.index += 1
+                            if self.index == onBoardingModel.count - 1 {
+                                isFinal.toggle()
+                            }
                         }
+                    } label: {
+                        ZStack{
+                            index < onBoarding.count - 1 ?
+                            Rectangle()
+                                .frame(width: 100, height: 50)
+                                .foregroundColor(.black)
+                                .cornerRadius(10) :
+                            nil
+                            Text(index < onBoarding.count - 1 ? "Next" : "")
+                                .font(.title)
+                                .foregroundColor(Colors.background)
+                        }
+
                     }
-                } label: {
-                    Text(index < onBoarding.count - 1 ? "Next" : "")
-                        .foregroundColor(.black)
+                    .buttonStyle(PlainButtonStyle())
+                    isFinal ? navApp : nil
                 }
-                .buttonStyle(PlainButtonStyle())
-                isFinal ? navApp : nil
+                .padding(.bottom, 30)
             }
+
+            .ignoresSafeArea()
+
         }
         .navigationViewStyle(StackNavigationViewStyle())
+
     }
     var navApp: some View {
         NavigationLink(destination: FleaMarket().navigationBarBackButtonHidden(), label: {
-                HStack { Text("Get Started")
+                ZStack {
+                    Rectangle()
+                        .frame(width: 200, height: 50)
                         .foregroundColor(.black)
+                        .cornerRadius(10)
+                    Text("Get Started")
+                        .font(.title)
+                        .foregroundColor(Colors.background)
                 }
         })
     }
